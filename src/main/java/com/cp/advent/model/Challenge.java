@@ -1,6 +1,7 @@
 package com.cp.advent.model;
 
 import com.cp.advent.challenges.day1.Day1;
+import com.cp.advent.challenges.day2.Day2;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,7 @@ public abstract class Challenge {
         }
 
         try {
+            scan.close();
             is.close();
         } catch (IOException ignored) {}
     }
@@ -61,6 +63,7 @@ public abstract class Challenge {
     public static Challenge ofDay(int day) {
         switch (day) {
             case 1: return new Day1();
+            case 2: return new Day2();
             default: throw new NullPointerException();
         }
     }
