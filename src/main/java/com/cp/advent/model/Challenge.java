@@ -22,7 +22,7 @@ public abstract class Challenge {
     protected abstract void solveSecond();
 
     public void solve() {
-        System.out.println("# Solving day " + day);
+        System.out.printf("# Solving day %s\n", day);
 
         System.out.println("\n# Part 1");
         loadInput();
@@ -37,7 +37,7 @@ public abstract class Challenge {
 
     protected void loadInput() {
         lines = new ArrayList<>();
-        URL url = getClass().getClassLoader().getResource("inputs/day" + day + ".txt");
+        URL url = getClass().getClassLoader().getResource(String.format("inputs/day%s.txt", day));
         if (url == null) {
             return;
         }

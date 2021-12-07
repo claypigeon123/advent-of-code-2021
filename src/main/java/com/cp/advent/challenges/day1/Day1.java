@@ -24,7 +24,7 @@ public class Day1 extends Challenge {
             previous = current;
         }
 
-        System.out.println("There are " + increases + " measurements that are larger than the previous measurement.");
+        System.out.printf("There are %s measurements that are larger than the previous measurement.\n", increases);
     }
 
     @Override
@@ -48,6 +48,6 @@ public class Day1 extends Challenge {
             previous = current;
         }
 
-        System.out.println("There are " + increases + " measurements in blocks of " + PART_2_WINDOW_SIZE + " that are larger than the previous measurement.");
+        System.out.printf("There are %s measurements in blocks of %s that are larger than the previous measurement.\n", increases, PART_2_WINDOW_SIZE);
     }
 }
