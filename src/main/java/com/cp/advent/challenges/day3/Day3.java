@@ -1,11 +1,14 @@
 package com.cp.advent.challenges.day3;
 
 import com.cp.advent.challenges.day3.model.BitCounter;
+import com.cp.advent.challenges.day3.model.Diagnostic;
 import com.cp.advent.model.Challenge;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static com.cp.advent.challenges.day3.model.Diagnostic.*;
 
 public class Day3 extends Challenge {
 
@@ -39,29 +42,8 @@ public class Day3 extends Challenge {
 
     @Override
     protected void solveSecond() {
-        List<String> remaining = new ArrayList<>(lines);
-        AtomicInteger pos = new AtomicInteger(-1);
-        do {
-            pos.incrementAndGet();
-            BitCounter counter = findFrequencyInPosition(remaining, pos.intValue());
-            char winner = counter.getTrueCount() >= counter.getFalseCount() ? '1' : '0';
-            remaining = remaining.stream()
-                .filter(s -> s.charAt(pos.intValue()) == winner)
-                .collect(Collectors.toList());
-        } while (remaining.size() > 1);
-        int oxygen = Integer.parseInt(remaining.stream().findFirst().orElseThrow(), 2);
-
-        remaining = new ArrayList<>(lines);
-        pos.set(-1);
-        do {
-            pos.incrementAndGet();
-            BitCounter counter = findFrequencyInPosition(remaining, pos.intValue());
-            char winner = counter.getTrueCount() >= counter.getFalseCount() ? '0' : '1';
-            remaining = remaining.stream()
-                .filter(s -> s.charAt(pos.intValue()) == winner)
-                .collect(Collectors.toList());
-        } while (remaining.size() > 1);
-        int co2 = Integer.parseInt(remaining.stream().findFirst().orElseThrow(), 2);
+        int oxygen = getDiagnosticFor(OXYGEN_GENERATOR_RATING, new ArrayList<>(lines));
+        int co2 = getDiagnosticFor(CO2_SCRUBBER_RATING, new ArrayList<>(lines));
 
         System.out.printf("With an oxygen generator rating of %s and a CO2 scrubber rating of %s, their product (and the answer to the puzzle) is: %s\n", oxygen, co2, oxygen * co2);
     }
@@ -84,5 +66,18 @@ public class Day3 extends Challenge {
             counter.processBit(ch);
         }
         return counter;
+    }
+
+    private int getDiagnosticFor(Diagnostic diagnostic, List<String> remaining) {
+        AtomicInteger pos = new AtomicInteger(-1);
+        do {
+            pos.incrementAndGet();
+            BitCounter counter = findFrequencyInPosition(remaining, pos.intValue());
+            char winner = counter.getTrueCount() >= counter.getFalseCount() ? diagnostic.getPrevailingBit() : diagnostic.getFallbackBit();
+            remaining = remaining.stream()
+                .filter(s -> s.charAt(pos.intValue()) == winner)
+                .collect(Collectors.toList());
+        } while (remaining.size() > 1);
+        return Integer.parseInt(remaining.stream().findFirst().orElseThrow(), 2);
     }
 }
